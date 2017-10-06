@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "530133677845",
+    "project_id": "firebase-reviewmovie"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:530133677845:android:59040d44042bac65",
+        "android_client_info": {
+          "package_name": "com.ditmarcastro.reviewmovie"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "530133677845-hq5gb2ju2r9rqg8kgag4311lvh9p00vs.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "530133677845-2l0i4jkufdabglus15a4frg7acsfr90s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ditmarcastro.reviewmovie",
+            "certificate_hash": "f455e1efb6476e1bd1e8753bc10193311f63b857"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAb1WnpZfB5y2JgXB2tmlbmuQ8MuBZGTjk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
