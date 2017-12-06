@@ -1,6 +1,8 @@
 package com.ditmarcastro.reviewmovie.Collection;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,10 @@ import android.widget.TextView;
 import com.ditmarcastro.reviewmovie.MainActivity;
 import com.ditmarcastro.reviewmovie.R;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,11 +50,23 @@ public class ListAdapter extends BaseAdapter {
             view = inflate.inflate(R.layout.item_ui, null);
         }
         TextView titulo = (TextView)view.findViewById(R.id.titletxt);
-        TextView descripcion = (TextView)view.findViewById(R.id.description);
-        ImageView image = (ImageView) view.findViewById(R.id.imagesource);
-        titulo.setText(this.items.get(i).getTitle());
-        descripcion.setText(this.items.get(i).getDescription());
+        ImageView image = (ImageView) view.findViewById(R.id.imageView2);
+        String url = this.items.get(i).getUrl();
+        try {
+            URL route = new URL(url);
+            InputStream in = route.openConnection().getInputStream();
+            Bitmap img = BitmapFactory.decodeStream(in);
+            image.setImageBitmap(img);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
 
+        }
+        //InputStream in =
+        //Bitmap img = BitmapFactory.decodeStream(in);
+        //image.setImageBitmap();
+        titulo.setText(this.items.get(i).getTitle());
         return view;
     }
 }

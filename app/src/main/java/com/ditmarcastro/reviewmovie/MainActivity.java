@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -25,10 +26,14 @@ import android.widget.Toast;
 import com.ditmarcastro.reviewmovie.Collection.Item;
 import com.ditmarcastro.reviewmovie.restApi.OnRestLoadListener;
 import com.ditmarcastro.reviewmovie.restApi.RestApi;
+import com.ditmarcastro.reviewmovie.utils.Utils;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedOutputStream;
@@ -62,9 +67,54 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        // codifo para modo stricto
 
-        loadComponents();
+        if (android.os.Build.VERSION.SDK_INT > 9)
+        {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+
+
+        loadImages();
+        //loadComponents();
         //checkRest();
+    }
+    private void loadImages() {
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get("http://192.168.43.124:3000/getimages", null, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                // If the response is JSONObject instead of expected JSONArray
+            }
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                ArrayList<Item> image_list = new ArrayList<Item>();
+
+                for (int i = 0; i < response.length(); i++) {
+                    try {
+                        JSONObject obj = response.getJSONObject(i);
+                        String url = obj.getString("url");
+                        String name = obj.getString("name");
+                        Item item_list = new Item();
+                        item_list.setTitle(name);
+                        item_list.setUrl(url);
+                        image_list.add(item_list);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                loadListAdapter(image_list);
+                //list.setAdapter(adapter);
+            }
+        });
+    }
+
+    private void loadListAdapter(ArrayList<Item> list) {
+        ListView listUi = (ListView)this.findViewById(R.id.list_main);
+        ListAdapter adapter = new com.ditmarcastro.reviewmovie.Collection.ListAdapter(this, list);
+        listUi.setAdapter(adapter);
     }
 
     private void checkRest() {
@@ -118,6 +168,7 @@ public class MainActivity extends AppCompatActivity
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
+        Toast.makeText(this, Utils.email, Toast.LENGTH_SHORT).show();
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement

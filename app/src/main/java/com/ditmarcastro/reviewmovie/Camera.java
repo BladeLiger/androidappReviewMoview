@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ditmarcastro.reviewmovie.utils.Utils;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInApi;
@@ -94,6 +95,7 @@ public class Camera extends AppCompatActivity implements GoogleApiClient.OnConne
         if(result.isSuccess()) {
            GoogleSignInAccount datos =  result.getSignInAccount();
             TextView txt = (TextView)this.findViewById(R.id.correo);
+            Utils.email = datos.getEmail();
             txt.setText(datos.getEmail());
         }else{
             Toast.makeText(this, "ERROR no conoces el password", Toast.LENGTH_SHORT).show();
